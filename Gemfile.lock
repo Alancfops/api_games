@@ -309,7 +309,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   brakeman
-  bunny
+  bunny (~> 2.0)
   debug
   kamal
   pg (>= 1.4)

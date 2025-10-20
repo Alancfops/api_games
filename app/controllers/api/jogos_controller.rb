@@ -15,6 +15,13 @@ module Api
     def create
       jogo = Jogo.new(jogo_params)
       if jogo.save
+        begin
+          $queue.publish(jogo.to_json, persistent: true)
+          Rails.logger.info "Jogo enviado para RabbitMQ: #{jogo.titulo}"
+        rescue StandardError => e
+          Rails.logger.error "Erro ao enviar para RabbitMQ: #{e.message}"
+        end
+
         render json: jogo, status: :created
       else
         render json: jogo.errors, status: :unprocessable_entity
